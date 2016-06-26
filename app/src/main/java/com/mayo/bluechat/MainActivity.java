@@ -59,9 +59,15 @@ public class MainActivity extends AppCompatActivity implements Callback {
 
             switch (msg.what) {
                 case MESSAGE_RECIEVED:
+
                     String readMessage = new String((byte[]) msg.obj, 0, msg.arg1);
                     Logger.print("Read: " + readMessage);
                     Toast.makeText(activity, "Read Message: " + readMessage, Toast.LENGTH_SHORT).show();
+
+                    if (readMessage.equals("hello")) {
+                        readMessage = "bolo";
+                        write(readMessage.getBytes());
+                    }
                     break;
             }
         }
@@ -73,6 +79,28 @@ public class MainActivity extends AppCompatActivity implements Callback {
     private AcceptThread mSecureAcceptThread;
     private AcceptThread mInsecureAcceptThread;
     private ConnectThread mConnectThread;
+    private final Handler mHandler = new Handler() {
+
+
+        @Override
+        public void handleMessage(Message msg) {
+            AppCompatActivity activity = MainActivity.this;
+
+            switch (msg.what) {
+                case MESSAGE_RECIEVED:
+
+                    String readMessage = new String((byte[]) msg.obj, 0, msg.arg1);
+                    Logger.print("Read: " + readMessage);
+                    Toast.makeText(activity, "Read Message: " + readMessage, Toast.LENGTH_SHORT).show();
+
+                    if (readMessage.equals("hello")) {
+                        readMessage = "bolo";
+                        write(readMessage.getBytes());
+                    }
+                    break;
+            }
+        }
+    };
     private ConnectedThread mConnectedThread;
     private int mState;
     private boolean isDiscovering;
