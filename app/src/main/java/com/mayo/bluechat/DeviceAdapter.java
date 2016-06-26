@@ -1,7 +1,6 @@
 package com.mayo.bluechat;
 
 import android.support.v7.widget.RecyclerView;
-import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +37,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        Logger.print("Pos: " + position + " " + devices.get(position));
+//        Logger.print("Pos: " + position + " " + devices.get(position));
         holder.name.setText(devices.get(position).name);
 
         holder.name.setOnClickListener(new View.OnClickListener() {
@@ -52,11 +51,29 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        Logger.print("Devices Found: " + devices.size());
+//        Logger.print("Devices Found: " + devices.size());
         return devices.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    private void prepareData() {
+//        Logger.print("Preparing data: " + Blue.getInstance().devices.size());
+        devices.clear();
+
+        Set<String> s = Blue.getInstance().devices.keySet();
+        Iterator<String> it = s.iterator();
+        String address;
+        while (it.hasNext()) {
+            address = it.next();
+            devices.add(new Device(address, Blue.getInstance().devices.get(address)));
+        }
+    }
+
+    public void notifyDataChanged(){
+        prepareData();
+        notifyDataSetChanged();
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView name;
 
@@ -65,23 +82,5 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
 
             name = (TextView) v.findViewById(R.id.device_name);
         }
-    }
-
-    private void prepareData(){
-        Logger.print("Preparing data: " + Blue.getInstance().devices.size());
-        devices.clear();
-
-        Set<String> s = Blue.getInstance().devices.keySet();
-        Iterator<String> it = s.iterator();
-        String address;
-        while(it.hasNext()){
-            address = it.next();
-            devices.add(new Device(address,Blue.getInstance().devices.get(address)));
-        }
-    }
-
-    public void notifyDataChanged(){
-        prepareData();
-        notifyDataSetChanged();
     }
 }
