@@ -50,28 +50,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
             UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
     private static final UUID MY_UUID_INSECURE =
             UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
-    private final Handler mHandler = new Handler() {
 
-
-        @Override
-        public void handleMessage(Message msg) {
-            AppCompatActivity activity = MainActivity.this;
-
-            switch (msg.what) {
-                case MESSAGE_RECIEVED:
-
-                    String readMessage = new String((byte[]) msg.obj, 0, msg.arg1);
-                    Logger.print("Read: " + readMessage);
-                    Toast.makeText(activity, "Read Message: " + readMessage, Toast.LENGTH_SHORT).show();
-
-                    if (readMessage.equals("hello")) {
-                        readMessage = "bolo";
-                        write(readMessage.getBytes());
-                    }
-                    break;
-            }
-        }
-    };
     private BluetoothAdapter mBluetoothAdapter;
     private DeviceAdapter adapter;
     private RecyclerView mRecyler;
@@ -79,8 +58,8 @@ public class MainActivity extends AppCompatActivity implements Callback {
     private AcceptThread mSecureAcceptThread;
     private AcceptThread mInsecureAcceptThread;
     private ConnectThread mConnectThread;
+    private ConnectedThread mConnectedThread;
     private final Handler mHandler = new Handler() {
-
 
         @Override
         public void handleMessage(Message msg) {
@@ -101,7 +80,6 @@ public class MainActivity extends AppCompatActivity implements Callback {
             }
         }
     };
-    private ConnectedThread mConnectedThread;
     private int mState;
     private boolean isDiscovering;
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
